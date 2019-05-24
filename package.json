@@ -1,0 +1,23 @@
+{
+  "name": "wise-wallet",
+  "version": "0.1.0",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron src/main.js",
+    "packager": "electron-packager ./ Wallet --all --out ./OutApp --electron-version 2.0.8 --overwrite"
+  },
+  "devDependencies": {
+    "electron": "^2.0.8",
+    "electron-builder": "^20.39.0",
+    "electron-packager": "^12.2.0",
+    "electron-rebuild": "^1.8.2",
+    "eslint": "^5.5.0"
+  },
+  "dependencies": {
+    "argon2": "^0.19.3",
+    "bn.js": "^4.11.8",
+    "ethers": "^4.0.27",
+    "sqlite3": "^4.0.2",
+    "uuid": "^3.3.2"
+  }
+}

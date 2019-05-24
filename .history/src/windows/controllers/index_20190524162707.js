@@ -225,40 +225,38 @@ class Index {
           }
       
       }]
-    }
-    // ,{
-    //   label: s10,
-    //   submenu: [{
-    //     label: s11, type: 'checkbox',id:'check1',checked: checka,
-    //       click: function(){
-    //         global.network.someProperty="main"
-    //         const options = {
-    //           title: '提示',
-    //           message: "已切换到主网！",
-    //           buttons: ['是']
-    //         }
-    //         remote.dialog.showMessageBox(options);
-    //         var menu = Menu.buildFromTemplate(new Index().menuindex(1));
-    //         Menu.setApplicationMenu(menu);
-    //       }
+    },{
+      label: s10,
+      submenu: [{
+        label: s11, type: 'checkbox',id:'check1',checked: checka,
+          click: function(){
+            global.network.someProperty="main"
+            const options = {
+              title: '提示',
+              message: "已切换到主网！",
+              buttons: ['是']
+            }
+            remote.dialog.showMessageBox(options);
+            var menu = Menu.buildFromTemplate(new Index().menuindex(1));
+            Menu.setApplicationMenu(menu);
+          }
       
-    //   },{
-    //     label: s12, type: 'checkbox',checked: checkb,
-    //       click: function(){
-    //         global.network.someProperty="test"
-    //         const options = {
-    //           title: '提示',
-    //           message: "已切换到测试网！",
-    //           buttons: ['是']
-    //         }
-    //         remote.dialog.showMessageBox(options);
-    //         var menu = Menu.buildFromTemplate(new Index().menuindex(2));
-    //         Menu.setApplicationMenu(menu);
-    //       }
+      },{
+        label: s12, type: 'checkbox',checked: checkb,
+          click: function(){
+            global.network.someProperty="test"
+            const options = {
+              title: '提示',
+              message: "已切换到测试网！",
+              buttons: ['是']
+            }
+            remote.dialog.showMessageBox(options);
+            var menu = Menu.buildFromTemplate(new Index().menuindex(2));
+            Menu.setApplicationMenu(menu);
+          }
       
-    //   }]
-    // }
-    ,{
+      }]
+    },{
       label: s6,
       submenu: [{
         label: s7,
