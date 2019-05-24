@@ -17,41 +17,10 @@ class AccountHandle {
     constructor() {}
 
     createAccount (net) {
-        const secretKey = this.createSecretKey();
-        let keyPair = this.createKeyPairBySecretKey(secretKey);
-        let s1 = keccak256(keyPair.publicKey);
-        let checkAddress = s1.toLowerCase().substring(19,s1.length-1).split("");
-        let hashAddress = keccak256(checkAddress);
-        var address="";
-        for(var i=0;i<checkAddress.length;i++){
-            if(isNaN(checkAddress[i])){
-                if(parseInt(checkAddress[i],16)-parseInt(hashAddress[i],16)>parseInt("0x8",16)){
-                    address=address+checkAddress[i].toUpperCase();
-                }else{
-                    address=address+checkAddress[i];
-                  }
-            }else{
-                address=address+checkAddress[i];
-            }
-        }
-
-
-        let s2;
-        if(net == "main"){
-            s2="WX"+address;//测试链WS，实际WX
-        }else{
-            s2="WS"+address;//测试链WS，实际WX
-        }
-        //let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
-        //let s3 = '00' + s2;
-        // if(netType == NetType.Test_Net) {
-        //     s3 = 'S'.charCodeAt() + s2;
-        // }
-        // let v = keccak512(this.Hex2Array(s3)).substring(0, 8);
-        // let s4 = s3 + v;
-        // let addr = new bs58().encode(this.Hex2Array(s4));
+        let keyPair = this.createkeyPair(net);
+        let s2 = this.pubKeyToaddress(keyPair.publicKey);
         return {
-            'secretKey': secretKey,
+            'secretKey': keyPair.secretKey,
             'publicKey': keyPair.publicKey,
             'addr': s2
         }
@@ -133,6 +102,39 @@ class AccountHandle {
         // }
         // return ret;
         return Buffer.from(hex, 'hex');
+    }
+
+    createkeyPair(){
+        const secretKey = this.createSecretKey();
+        let keyPair = this.createKeyPairBySecretKey(secretKey);
+        return keyPair;
+    }
+    pubKeyToaddress(publicKey){
+        let s1 = keccak256(publicKey);
+        let checkAddress = s1.toLowerCase().substring(19,s1.length-1).split("");
+        let hashAddress = keccak256(checkAddress);
+        var address="";
+        for(var i=0;i<checkAddress.length;i++){
+            if(isNaN(checkAddress[i])){
+                if(parseInt(checkAddress[i],16)-parseInt(hashAddress[i],16)>parseInt("0x8",16)){
+                    address=address+checkAddress[i].toUpperCase();
+                }else{
+                    address=address+checkAddress[i];
+                  }
+            }else{
+                address=address+checkAddress[i];
+            }
+        }
+        let   s2="WX"+address;//测试链WS，实际WX
+        //let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
+        //let s3 = '00' + s2;
+        // if(netType == NetType.Test_Net) {
+        //     s3 = 'S'.charCodeAt() + s2;
+        // }
+        // let v = keccak512(this.Hex2Array(s3)).substring(0, 8);
+        // let s4 = s3 + v;
+        // let addr = new bs58().encode(this.Hex2Array(s4));
+        return s2;
     }
 
     

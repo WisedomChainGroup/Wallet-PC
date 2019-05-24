@@ -11,7 +11,7 @@ const nacl = require('./windows/lib/nacl.min.js');
 //const AccountHandle = require('./windows/lib/account-handle');
 const KeyStore = require('./windows/lib/keystore');
 // require('../test/GetMaxNum');
-const Verification = require('./windows/lib/Verification');
+
 
 
 
@@ -38,19 +38,7 @@ class Main{
         //await keystore.DecryptSecretKey('WXSc6cc0fc724c44276beb642@1545967555087', '123456');
         //校验地址
         //Verification.AddressVerify('WSc6cc0fc724c44276beb642');
-
-          
     }
-
-    // test() {
-    //     let seed = new Uint8Array(32);
-    //     for(let i=0; i<32; i++)
-    //     {
-    //         seed[i] = 0;
-    //     }
-    //     let keyPair = nacl.sign.keyPair.fromSeed(seed);
-    //     new AccountHandle().createAccountWithPubKey(keyPair.publicKey);
-    // }
 
     initEvent() {
         //账户另存为

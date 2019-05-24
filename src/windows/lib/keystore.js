@@ -2,7 +2,7 @@
 
 const AccountHandle = require('./account-handle');
 const aesjs = require('./aes-js');
-const keccak512 = require('./sha3').keccak512;
+const keccak256 = require('./sha3').keccak256;
 const argon2 = require('argon2');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -60,7 +60,7 @@ class KeyStore {
         //用来比较解密密钥与口令的
         const dc = derivedKey.toString('hex') + keyStore.crypto.ciphertext;
         const dc_buf = Buffer.from(dc, 'hex');
-        keyStore.mac = keccak512(dc_buf);
+        keyStore.mac = keccak256(dc_buf);
         //这是UUID，可以直接通过程序计算得到
         keyStore.id = uuidV4();
 
@@ -89,7 +89,7 @@ class KeyStore {
 
         const dc = derivedKey.toString('hex') + keyStore.crypto.ciphertext;
         const dc_buf = Buffer.from(dc, 'hex');
-        const mac = keccak512(dc_buf);
+        const mac = keccak256(dc_buf);
 
         if(mac != keyStore.mac) return null;
 
@@ -151,7 +151,7 @@ class KeyStore {
 
         const dc = derivedKey.toString('hex') + keyStore.crypto.ciphertext;
         const dc_buf = Buffer.from(dc, 'hex');
-        const mac = keccak512(dc_buf);
+        const mac = keccak256(dc_buf);
 
         if(mac != keyStore.mac) return null;
 
@@ -192,7 +192,7 @@ class KeyStore {
 
         const dc = derivedKey.toString('hex') + keyStore.crypto.ciphertext;
         const dc_buf = Buffer.from(dc, 'hex');
-        const mac = keccak512(dc_buf);
+        const mac = keccak256(dc_buf);
 
         if(mac != keyStore.mac){
             return null;
