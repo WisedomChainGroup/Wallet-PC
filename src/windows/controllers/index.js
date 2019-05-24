@@ -258,25 +258,26 @@ class Index {
       
     //   }]
     // }
-    ,{
-      label: s6,
-      submenu: [{
-        label: s7,
-        submenu: [{
-          label: '中文',
-          click: function(){
-            var menu = Menu.buildFromTemplate(new Index().menuindex('zh'));
-            Menu.setApplicationMenu(menu);
-          }
-        },{
-          label: 'English',
-          click: function(){
-            var menu = Menu.buildFromTemplate(new Index().menuindex('en'));
-            Menu.setApplicationMenu(menu);
-          }
-        }]
-      }]
-    }];
+    // ,{
+    //   label: s6,
+    //   submenu: [{
+    //     label: s7,
+    //     submenu: [{
+    //       label: '中文',
+    //       click: function(){
+    //         var menu = Menu.buildFromTemplate(new Index().menuindex('zh'));
+    //         Menu.setApplicationMenu(menu);
+    //       }
+    //     },{
+    //       label: 'English',
+    //       click: function(){
+    //         var menu = Menu.buildFromTemplate(new Index().menuindex('en'));
+    //         Menu.setApplicationMenu(menu);
+    //       }
+    //     }]
+    //   }]
+    // }
+  ];
 
     
     return template;

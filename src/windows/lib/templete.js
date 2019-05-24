@@ -4,7 +4,7 @@ class Templete
 
     static account(address, name) {
         return `
-        <a class="wallet-box" href="${address}" onclick="return false;">
+        <a class="wallet-box" onclick="return false;">
             <span></span>
             <h3 class="not-ens-name">
                 <i class="iconfont icon-key"></i>

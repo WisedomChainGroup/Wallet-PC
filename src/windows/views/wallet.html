@@ -14,7 +14,6 @@
 
 <body>
   <main class="dapp-content">
-    <h1><strong>Account</strong> overview</h1>
     <div class="wallet-box-list">
         <!-- <a class="wallet-box" href="0xF6026cE0f721cd8Ca85624bCb0Ca0De9E54986a4" onclick="return false;">
           <span></span>
@@ -40,17 +39,11 @@ var remote = require('electron').remote;
 var __dirname =  remote.getGlobal('sharedObject').__dirname;
 var newpath = __dirname.substring(0,__dirname.length-23);
 
-var Web3 = require('web3');
-var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/ad89cc84245d499f89a5d9e1999ceb3f'));
-var readpath = newpath+"sol/WisdomMapping.json"
-//var abi = fs.readFileSync(readpath).toString();
-var abi = require(readpath);
-var MyContract =new web3.eth.Contract(abi,'0xD8b894eB52710Ef80e5f8b5ff4E6A126EcCc4679');
  
 
 async function asyncCall(ethaddress) {
-    var value = await MyContract.methods.balanceOf(ethaddress).call({ from: ethaddress ,gas: 3141592});
-    return value;
+    // var value = await MyContract.methods.balanceOf(ethaddress).call({ from: ethaddress ,gas: 3141592});
+    // return value;
 }
    $(document).ready(function () {
 
@@ -101,12 +94,12 @@ async function asyncCall(ethaddress) {
           $(".wallet-box-list").append(Templete.account(list[i].address, list[i].name));
         }
 
-        $(".wallet-box").click(function(){
-            $('.dapp-header a', parent.document).removeClass("active");
+        // $(".wallet-box").click(function(){
+        //     $('.dapp-header a', parent.document).removeClass("active");
 
-            localStorage.setItem("account-key", $(this).attr("href"));
-            $(location).attr("href", "account.html");
-          })
+        //     localStorage.setItem("account-key", $(this).attr("href"));
+        //     $(location).attr("href", "account.html");
+        //   })
     }else{
       return;
     }

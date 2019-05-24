@@ -38,9 +38,9 @@ class AccountHandle {
 
         let s2;
         if(net == "main"){
-            s2="WX"+s1.substring(19,s1.length-1);//测试链WS，实际WX
+            s2="WX"+address;//测试链WS，实际WX
         }else{
-            s2="WS"+s1.substring(19,s1.length-1);//测试链WS，实际WX
+            s2="WS"+address;//测试链WS，实际WX
         }
         //let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
         //let s3 = '00' + s2;
