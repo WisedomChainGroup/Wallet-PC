@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link href="../styles/common.css" rel="stylesheet">
+  <link href="../styles/wallet.css" rel="stylesheet">
+  <link href="../styles/iconfont.css" rel="stylesheet">
+  <script>window.$ = window.jQuery = require('../lib/jquery-3.3.1.min.js');</script>
+  <script src="../lib/templete.js"></script>
+  <style type="text/css">
+    .intro{
+        filter:alpha(opacity=0);opacity:0;width: 0;height: 0;
+    }
+
+</style>
+</head>
+
+<body>
+  <main class="dapp-content">
+    <div class="wallet-box-list" style="text-align: center;">
+      <div id="inputpass">
+        <p id="passP" style="text-align:center">请输入密码：</p>
+        <p id="success" style="text-align:center" class="intro">添加成功！</p>
+        <input type="text" id="passwd"></input>
+        <button type="button" value="确认" id="result" onclick="add()">确认</button>
+      </div>
+      <br>
+      <br>
+      <span id="script"></span>
+    </div>
+  </main>
+</body>
+<script language="javascript" type="text/javascript">
+  window.require = window.parent.require;
+
+  var remote = require('electron').remote;
+  var net =  remote.getGlobal('network').someProperty;
+  const ipc = require('electron').ipcRenderer;
+    
+  $(document).ready(function () {
+    const informationBtn = document.getElementById('result');
+    });
+  const KeyStore = require('../lib/keystore');
+  async function add(){
+    var {remote}=require('electron');
+    var passwd = document.getElementById('passwd').value;
+    if(passwd == ""){
+      remote.dialog.showErrorBox('','请输入密码!');
+      return false;
+    }
+    try{
+        const keystore = new KeyStore();
+        //创建keystore
+        const savefile = await keystore.Create(passwd,net);
+        //保存keystore
+        keystore.Save(savefile,net);
+        $("#success").removeClass("intro"); 
+        $("#passwd").addClass("intro");   
+        $("#result").addClass("intro");   
+        $("#passP").addClass("intro"); 
+        var data = "data";
+        ipc.send("hereyoua",data);
+    }catch(e){
+        alert("添加失败！");
+        return false;
+    }
+  }
+    
+</script>
+</html>

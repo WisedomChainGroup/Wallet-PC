@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link href="../styles/common.css" rel="stylesheet">
+  <link href="../styles/wallet.css" rel="stylesheet">
+  <link href="../styles/iconfont.css" rel="stylesheet">
+  <script>window.$ = window.jQuery = require('../lib/jquery-3.3.1.min.js');</script>
+  <script src="../lib/templete.js"></script>
+</head>
+
+<body>
+  <main class="dapp-content">
+    <div class="wallet-box-list" style="text-align: center;">
+      <div id="inputpass">
+        <input type="text" id="passwd"></input>
+        <button type="button" value="确认" id="result">确认</button>
+      </div>
+      <br>
+      <br>
+      <span id="script"></span>
+    </div>
+  </main>
+</body>
+<script language="javascript" type="text/javascript">
+  window.require = window.parent.require;
+
+  $(document).ready(function () {
+    const {ipcRenderer} = require('electron');
+    const fs = require('fs');
+    const KeyStore = require('../lib/keystore');
+    const keystore = new KeyStore();
+    const session = require('electron').remote.session;
+    const ethers = require('ethers');
+   /*  const clidwindow = require('../controllers/clidwindow');
+    const cw=new clidwindow(); */
+    const informationBtn = document.getElementById('result')
+    informationBtn.addEventListener('click', (event) => {
+      
+        var path;
+        var type;
+        session.defaultSession.cookies.get({ url: "http://www.github.com" }, function (error, cookies) { 
+            path=cookies[0].value;
+            type=cookies[1].value; 
+            var passwd=$.trim($('#passwd').val());
+            if(passwd==""){
+              alert("密码不能为空");
+              return false;
+            }
+            try{
+              var SecretKey;
+              var josn=keystore.Readfull(path);
+              SecretKey=keystore.DecryptSecretKeyfull(josn,passwd);
+            }catch(e){
+              alert("获取私钥失败，请检查keystore和密码是否正确！");
+              return false;
+            }
+            var ss=SecretKey.then(function (rs) {
+              
+              if(rs!=null){
+                if(type=="1" || type == "3"){//导出
+                  $('#inputpass').html("");
+                  $('#script').append(rs);
+                }else{//另存为
+                  alert("请选择另存为路径");
+                  ipcRenderer.send('save-dialog');
+                  ipcRenderer.on('saved-file', (event, path) => {
+                    if(path!=null){
+                      fs.writeFile(path, rs,{flag: 'w'},function (err) {
+                        var context;
+                        if(err) {
+                            console.log(err);
+                            context="另存为出错，请重新选择！";
+                        }else{
+                            context="另存为成功";
+                        }
+                        $('#inputpass').html("");
+                        $('#script').append(context);
+                      });
+                    }
+                  })
+                }
+              }else{
+                alert("获取私钥失败，请检查keystore和密码是否正确！");
+                return false;
+              }
+               
+            });
+            
+        })
+      })
+    });
+</script>
+</html>

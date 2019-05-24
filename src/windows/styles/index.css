@@ -1,0 +1,68 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: #f0f0f0;
+    height: 100%;
+}
+
+.drag-bar {
+    min-height: 20px;
+}
+
+.dapp-header {
+    padding-left: 80px;
+    padding-right: 80px;
+    display: flex;
+    height: 80px;
+    background: #f0f0f0;
+    align-items: flex-end;
+}
+
+.dapp-header > ul {
+    list-style: none;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0px;
+}
+
+.dapp-header > ul > li {
+    display: inline-block;
+}
+
+.dapp-header > ul > li > a {
+    display: block;
+    padding-left:  32px;
+    padding-right: 32px;
+
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+    border-bottom-color: #f0f0f0;
+
+    cursor: pointer;
+}
+
+.dapp-header > ul > li > a.active {
+    border-bottom-color: #fff;
+    color: darkturquoise;
+}
+
+.dapp-header > ul > li > a > i {
+    display: block;
+    text-align: center;
+    font-size: 2em;
+}
+
+.dapp-header > ul > li > a > span {
+    display: block;
+    text-align: center;
+}
+
+.content-page {
+    border-width: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+}

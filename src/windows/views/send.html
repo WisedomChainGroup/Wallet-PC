@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <link href="../styles/common.css" rel="stylesheet">
+    <link href="../styles/send.css" rel="stylesheet">
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+  </head>
+
+  <body>
+    <main class="dapp-content">
+      <h1><strong>Send</strong> funds</h1>
+      <div class="from-to">
+        <div class="from">
+          <h3>From</h3>
+          <select class="from-sel-box">
+          </select>
+        </div>
+        <div class="to">
+          <h3>To</h3>
+          <select class="to-sel-box">
+          </select>
+        </div>
+      </div>
+    </main>
+  </body>
+
+  <script language="javascript" type="text/javascript">
+    window.require = window.parent.require;
+    $(document).ready(function () {
+      //let addr = localStorage.getItem("account-key");
+
+      const SqliteHandle = require('../lib/sqlite-handle');
+
+      new SqliteHandle().getAll(function(rows) {
+        rows.forEach(element => {
+          $(".from-sel-box").append(`<option value=${element.address}>${element.address}</option>`);
+        });
+      });
+    });
+  </script>
+
+</html>

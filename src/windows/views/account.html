@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <link href="../styles/common.css" rel="stylesheet">
+    <link href="../styles/account.css" rel="stylesheet">
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+      .intro{
+          filter:alpha(opacity=0);opacity:0;width: 0;height: 0;
+      }
+  
+  </style>
+  </head>
+
+  <body>
+    <main class="dapp-content">
+      <div>
+          <h2>地址：</h2>
+          <span class="account-id"></span>
+      </div>
+      <!-- <div class="account-transaction-box">
+        <h2>余额：</h2>
+        <span class="eth-val"></span>
+      </div> -->
+    </main>
+  </body>
+
+  <script language="javascript" type="text/javascript">
+    window.require = window.parent.require;
+
+    const fs = require('fs');
+    const path = require('path');
+    var remote = require('electron').remote;
+    var __dirname =  remote.getGlobal('sharedObject').__dirname;
+    var newpath = __dirname.substring(0,__dirname.length-23);
+
+    // var Web3 = require('web3');
+    // var web3 = new Web3(new Web3.providers.HttpProvider('https:////127.0.0.1:7545'));
+    // var readpath = newpath+"sol/WisdomMapping.json"
+    // //var abi = fs.readFileSync(readpath).toString();
+    // var abi = require(readpath);
+    // var MyContract =new web3.eth.Contract(abi,'0xeed6243788aefd9b56d014bd1f9ec55c6fa4972f');
+    
+    
+
+    // async function asyncCall(ethaddress) {
+    //     var value = await MyContract.methods.balanceOf(ethaddress).call({ from: ethaddress ,gas: 3141592});
+    //     return value;
+    // }
+
+
+    $(document).ready(function () {
+      // let addr = localStorage.getItem("account-key");
+      // async function compute(ethaddress) {
+      //   var value = await asyncCall(ethaddress); 
+      //   $(". eth-val").text(addr);
+       
+      // }
+      const SqliteHandle = require('../lib/sqlite-handle');
+
+      //new SqliteHandle().getOne(addr, function(row) {
+        $(".account-id").text(addr);
+        // var ethvalue = App.getalance(addr);
+        // $(".eth-val").text(ethvalue);
+        
+      // });
+    });
+  </script>
+
+</html>

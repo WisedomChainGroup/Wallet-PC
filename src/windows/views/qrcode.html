@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link href="../styles/common.css" rel="stylesheet">
+  <link href="../styles/wallet.css" rel="stylesheet">
+  <link href="../styles/iconfont.css" rel="stylesheet">
+  <script>window.$ = window.jQuery = require('../lib/jquery-3.3.1.min.js');</script>
+  <script src="../lib/templete.js"></script>
+</head>
+
+<body>
+  <main class="dapp-content">
+    <!-- <h1><strong></strong> overview</h1> -->
+    <div class="wallet-box-list" style="text-align: center;">
+      <div id="inputpass">
+        <input type="text" id="passwd"></input>
+        <button type="button" value="确认" id="result">确认</button>
+      </div>
+      <br>
+      <br>
+      <p style="text-align: center;"><span id="script" ></span></p>
+    </div>
+  </main>
+</body>
+<script language="javascript" type="text/javascript">
+  window.require = window.parent.require;
+
+  $(document).ready(function () {
+    const fs = require('fs');
+    const qr = require('qr-image');
+    const KeyStore = require('../lib/keystore');
+    const keystore = new KeyStore();
+    const session = require('electron').remote.session;
+    const informationBtn = document.getElementById('result')
+    informationBtn.addEventListener('click', (event) => {
+        var path;
+        var type;
+        session.defaultSession.cookies.get({ url: "http://www.github.com" }, function (error, cookies) { 
+            path=cookies[0].value;
+            var passwd=$.trim($('#passwd').val());
+            if(passwd==""){
+              alert("密码不能为空");
+              return false;
+            }
+            try{
+              var josn=keystore.Readfull(path);
+              var SecretKey=keystore.verifySecretKey(josn,passwd);
+            }catch(e){
+              alert("获取二维码失败，请检查keystore和密码是否正确！");
+              return false;
+            }
+            SecretKey.then(function (rs) {
+              if(rs!=null){
+                var imgpath=path.split("/");
+                var fullimgpath="";
+                for(var x=1;x<imgpath.length-1;x++){
+                  fullimgpath+="/"+imgpath[x];
+                }
+                var imgaddress=fullimgpath+"/"+josn.address+".png";
+                var josnbuff = new Buffer(JSON.stringify(josn));
+                // var text = josnbuff.toString('base64');
+                var text=JSON.stringify(josn);
+                if(fs.existsSync(imgaddress)) {
+                  fs.unlink(imgaddress,function(error){
+                    if(error){
+                        alert("二维码生成失败，请重新生成");
+                        return false;
+                    }
+                  })
+                }
+                var temp_qrcode = qr.image(text,{ ec_level: 'H' });
+
+                 temp_qrcode.pipe(fs.createWriteStream(imgaddress).on('finish', function(){
+                  var html='<img src="'+imgaddress+'"alt="qrcode" style="height:300px;wigth:300px">';
+                  $('#inputpass').html("");
+                  $('#script').append(html);
+                }))
+              }else{
+                alert("获取二维码失败，请检查keystore和密码是否正确！");
+                return false;
+              }
+               
+            });
+            
+        })
+      })
+    });
+</script>
+</html>
