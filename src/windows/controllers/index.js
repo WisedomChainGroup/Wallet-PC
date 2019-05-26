@@ -8,6 +8,8 @@ const clidwindow=require('./clidwindow');
 const clidw=new clidwindow();
 const zh = require('../lang/zh');
 const en = require('../lang/en');
+const { app } = require('electron')
+
 
 // const Il8nindex=require('../i18n/Il8nindex');
 // new Il8nindex();
@@ -31,7 +33,6 @@ const ipc = require('electron').ipcMain;
 ipc.on("hereyoua",function(event,data){
   top.loadURL(`file://${path.join(__dirname, '/../views/index.html')}`);
   })
-
 //   ipc.on("close", (e) => {
     
 //     // app.quit();
@@ -39,7 +40,9 @@ ipc.on("hereyoua",function(event,data){
 
 // });
 
- 
+app.on('window-all-closed', () => {
+  app.quit()
+})
 
 
 var s1;
@@ -187,24 +190,26 @@ class Index {
             })
           }
         }]
-      }, {
-        label: s5,
-        accelerator:'Ctrl+Z',
-        click:function(){
-          dialog.showOpenDialog(null,{
-            properties: ['openFile', 'showHiddenFiles'],
-            filters: [{
-              name: 'Text', 
-            }]
-          },function(files){
-            if(files!=null){
-              let pathss=files[0];
+      }, 
+      // {
+      //   label: s5,
+      //   accelerator:'Ctrl+Z',
+      //   click:function(){
+      //     dialog.showOpenDialog(null,{
+      //       properties: ['openFile', 'showHiddenFiles'],
+      //       filters: [{
+      //         name: 'Text', 
+      //       }]
+      //     },function(files){
+      //       if(files!=null){
+      //         let pathss=files[0];
     
-              clidw.qrcode(top,pathss);
-            }
-          })
-        }
-      }, {
+      //         clidw.qrcode(top,pathss);
+      //       }
+      //     })
+      //   }
+      // }, 
+      {
         label: s13,
         click: function(){
           clidw.addAccount(top,__dirname);

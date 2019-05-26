@@ -46,9 +46,11 @@
   async function add(){
     var {remote}=require('electron');
     var passwd = document.getElementById('passwd').value;
+    if(passwd.length>20 || passwd.length<8){
+      alert("请输入8-20位密码");
+    }
     if(passwd == ""){
-      remote.dialog.showErrorBox('','请输入密码!');
-      return false;
+      alert("请输入密码");
     }
     try{
         const keystore = new KeyStore();
