@@ -15,16 +15,12 @@ class KeyStore {
     constructor() {
     }
 
-    async o(keystore){
-        console.log(await this.keystoreToPubkey(keystore,"12345678"));
-    }
     async Create (pwd,net) {
         let keyStore = {};
         const account = new AccountHandle().createAccount();
 
-        console.log(account.publicKey);
-        console.log(account.secretKey);
-        console.log(this.prikeyToPubkey(this.buf2hex(account.secretKey)));
+        console.log(this.addressToPubkeyHash(account.addr));
+        
         //地址
         keyStore.address = account.addr;
         keyStore.crypto = {};
@@ -181,7 +177,7 @@ class KeyStore {
                 str += tmp;
             }
 
-        return str;
+        return str.substring(0,64);
     }
 
     async verifySecretKey(keyStore, pwd) {
@@ -232,6 +228,13 @@ class KeyStore {
     async keystoreToPubkey(keyStore,pwd){
         return this.prikeyToPubkey(await this.DecryptSecretKeyfull(keyStore, pwd));
 
+    }
+    addressToPubkeyHash(address){
+        let _r5 = new bs58().decode(address);
+        let r5 = this.buf2hex(_r5);
+        let r2 = r5.substring(0,r5.length-8);
+        let r1 = r2.substring(2,r2.length)
+        return r1;
     }
 
     Check() {

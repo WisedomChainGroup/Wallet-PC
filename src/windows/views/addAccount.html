@@ -56,7 +56,6 @@
         const keystore = new KeyStore();
         //创建keystore
         const savefile = await keystore.Create(passwd,net);
-        const o = await keystore.o(savefile);
         //保存keystore
         keystore.Save(savefile,net);
         $("#success").removeClass("intro"); 
