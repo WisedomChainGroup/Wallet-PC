@@ -6,6 +6,7 @@ const keccak256 = require('./sha3').keccak256;
 const hash = require('./hashes.js');
 const nacl = require('./nacl.min.js');
 const crypto = require('crypto');
+const ripemd160 = crypto.createHash('ripemd160');
 
 const NetType = {
     'Public_Net': 1,
@@ -16,8 +17,9 @@ const NetType = {
 class AccountHandle {
     constructor() {}
 
-    createAccount (net) {
-        let keyPair = this.createkeyPair(net);
+    createAccount () {
+        
+        let keyPair = this.createkeyPair();
         let s2 = this.pubKeyToaddress(keyPair.publicKey);
         return {
             'secretKey': keyPair.secretKey,
@@ -109,35 +111,33 @@ class AccountHandle {
         let keyPair = this.createKeyPairBySecretKey(secretKey);
         return keyPair;
     }
+  
     pubKeyToaddress(publicKey){
-        let s1 = keccak256(publicKey);
-        let checkAddress = s1.toLowerCase().substring(19,s1.length-1).split("");
-        let hashAddress = keccak256(checkAddress);
-        var address="";
-        for(var i=0;i<checkAddress.length;i++){
-            if(isNaN(checkAddress[i])){
-                if(parseInt(checkAddress[i],16)-parseInt(hashAddress[i],16)>parseInt("0x8",16)){
-                    address=address+checkAddress[i].toUpperCase();
-                }else{
-                    address=address+checkAddress[i];
-                  }
-            }else{
-                address=address+checkAddress[i];
-            }
-        }
-        let   s2="WX"+address;//测试链WS，实际WX
-        //let s2 = new hash.RMD160({'utf8':false}).hex(this.Hex2Str(s1));
-        //let s3 = '00' + s2;
-        // if(netType == NetType.Test_Net) {
-        //     s3 = 'S'.charCodeAt() + s2;
-        // }
-        // let v = keccak512(this.Hex2Array(s3)).substring(0, 8);
-        // let s4 = s3 + v;
-        // let addr = new bs58().encode(this.Hex2Array(s4));
-        return s2;
+        //     1）、对公钥进行SHA3-256哈希，再进行RIPEMD-160哈希，
+        //         得到哈希值r1
+        //    3）、在r1前面附加一个字节的版本号:0x00
+        //         得到结果r2
+        //    4）、将r1进行两次SHA3-256计算，得到结果r3，
+        //         获得r3的前面4个字节，称之为b4
+        //    5）、将b4附加在r2的后面，得到结果r5
+        //    6）、将r5进行base58编码，得到结果r6
+        //    7）、r6就是地址
+        
+        //    同时提供方法将r6恢复为r1
+            
+        let pub256 = keccak256(publicKey);
+        let bufPub256 = Buffer.from(pub256, 'hex');
+        let r1 = crypto.createHash('ripemd160').update(bufPub256).digest('hex');
+        let r2 = "00"+r1;
+        let a  = Buffer.from(r1, 'hex');
+        let b = keccak256(a);
+        let c =Buffer.from(b, 'hex');
+        let r3 = keccak256(c);
+        let b4 = r3.substring(0,8);
+        let r5 = r2+b4;
+        let r6 = new bs58().encode(this.Hex2Array(r5));
+        return r6;
     }
-
-    
 }
 
 module.exports = AccountHandle;

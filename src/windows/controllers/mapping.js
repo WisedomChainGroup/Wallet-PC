@@ -71,28 +71,6 @@ const App = {
     }else{
       netStr = "WS";
     }
-    if(mainaddress == "" || mainaddress.length  != 46){
-        document.getElementById('mainaddress').value="";
-        // const options = {
-        //   title: '提示',
-        //   message: "请输入正确的主链地址！",
-        //   buttons: ['是']
-        // }
-        // remote.dialog.showMessageBox(options);
-        alert("请输入正确的主链地址!");
-        return false;
-    }    
-    if(mainaddress.substring(0,2) != netStr){
-      // const options = {
-      //   title: '提示',
-      //   message: "请选择对应的网络！",
-      //   buttons: ['是']
-      // }
-      // remote.dialog.showMessageBox(options);
-      alert("请选择对应的网络!");
-      return false;
-    }
-     
      const { isfreeze } = this.meta.methods;
      var isfreezeVal = await isfreeze().call();
      if(isfreezeVal == true){

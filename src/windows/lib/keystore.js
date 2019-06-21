@@ -9,14 +9,22 @@ const crypto = require('crypto');
 const uuidV4 = require('uuid/v4');
 const path = __dirname + "/../../../keystore/main";
 const testpath = __dirname + "/../../../keystore/test";
+const bs58 = require('./base58');
 
 class KeyStore {
     constructor() {
     }
 
+    async o(keystore){
+        console.log(await this.keystoreToPubkey(keystore,"12345678"));
+    }
     async Create (pwd,net) {
         let keyStore = {};
-        const account = new AccountHandle().createAccount(net);
+        const account = new AccountHandle().createAccount();
+
+        console.log(account.publicKey);
+        console.log(account.secretKey);
+        console.log(this.prikeyToPubkey(this.buf2hex(account.secretKey)));
         //地址
         keyStore.address = account.addr;
         keyStore.crypto = {};
@@ -63,7 +71,6 @@ class KeyStore {
         keyStore.mac = keccak256(dc_buf);
         //这是UUID，可以直接通过程序计算得到
         keyStore.id = uuidV4();
-
         return keyStore;
     }
 
@@ -102,6 +109,7 @@ class KeyStore {
     }
 
     Save (keystore,net) {
+        
         let newpath;
         if(net == "main"){
             newpath = path;
@@ -201,7 +209,30 @@ class KeyStore {
         }
     }
 
-    
+    buf2hex(buffer) { // buffer is an ArrayBuffer
+        return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+      }
+
+      Hex2Array(hex) {
+        // let ret = new Array();
+        // for(let i=0; i<hex.length; i+=2) {
+        //     ret.push(parseInt(hex.substr(i,2), 16));
+        // }
+        // return ret;
+        return Buffer.from(hex, 'hex');
+    }
+
+
+    prikeyToPubkey(prikey){
+        const keyPair = new AccountHandle().createKeyPairBySecretKey(this.Hex2Array(prikey));
+        return this.buf2hex(keyPair.publicKey);
+
+    }
+
+    async keystoreToPubkey(keyStore,pwd){
+        return this.prikeyToPubkey(await this.DecryptSecretKeyfull(keyStore, pwd));
+
+    }
 
     Check() {
     }
