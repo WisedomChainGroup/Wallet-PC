@@ -124,11 +124,10 @@ class AccountHandle {
         //    7）、r6就是地址
         
         //    同时提供方法将r6恢复为r1
-            
         let pub256 = keccak256(publicKey);
         let bufPub256 = Buffer.from(pub256, 'hex');
         let r1 = crypto.createHash('ripemd160').update(bufPub256).digest('hex');
-        let r2 = "49"+r1;
+        let r2 = "00"+r1;
         let a  = Buffer.from(r1, 'hex');
         let b = keccak256(a);
         let c =Buffer.from(b, 'hex');
