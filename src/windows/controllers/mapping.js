@@ -13,7 +13,8 @@ var fs = require('fs');
 
 var _abi = fs.readFileSync(jsonpath).toString();
 var abi = JSON.parse(_abi);
-var ejsabi = require('ethereumjs-abi')
+var ejsabi = require('ethereumjs-abi');
+
 
 
 
@@ -208,7 +209,7 @@ const App = {
   },
   checkEth: async function(ethaddress){
       
-      const KeyStore = require('../lib/keystore');
+      const KeyStore = require('keystore_wdc');
       const keystore = new KeyStore();
       
       var password = document.getElementById("ethpass").value;
@@ -221,7 +222,6 @@ const App = {
         alert("密码不能为空");
         return false;
       }
-
         ethers.Wallet.fromEncryptedJson(json, password).then(function(wallet) {
           document.getElementById("ethaddress").value = wallet.address;
           document.getElementById("privatekey").value =wallet.privateKey;
@@ -233,7 +233,7 @@ const App = {
               alert("获取私钥失败，请检查keystore和密码是否正确！");
               return false;
           }
-      );;
+      );
   },
 };
 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>钱包浏览器</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="css/nodeinfo.css" />
+		<link rel="stylesheet" href="css/public2.css" />
+		<script src="../lib/jquery-3.3.1.min.js"></script>
+	</head>
+	<body>
+		<section class="outer-section">
+			<div class="account_backdrop">
+				<div id="" class="nav">
+					<ul>
+						<li class="noseelct_li"><a href="account.html">ACCOUNT</a></li>
+						<li class="noseelct_li"><a href="send.html">SEND</a></li>
+						<li class="select_li"><a href="nodeinfo.html">NODEINFO</a></li>
+						<li class="noseelct_li"><a href="transferinfo.html">TRANSATIONINFO</a></li>
+						<li class="noseelct_li"><a href="prove.html">PROVE</a></li>
+					</ul>
+				</div>
+				<div class="con_nodes">
+					<div class="con_blue"></div>
+				</div>
+				<div class="con_nodes2">
+					<div class="h_node_info">
+						<div class="h_cont_use_key" style="">
+							<img class="" src="img/n1@2x.png"/>
+							<span class="">NODE</span> 
+						</div>
+						<div class="h_cont_use_val"style="">
+							<span id="ip"></span>
+						</div>
+					</div>
+					<div class="con_string"></div>
+					<div class="h_node_info">
+						<div class="h_cont_use_key" style="">
+							<img class="" src="img/n2@2x(1).png"/>
+							<span class="">VERSION</span> 
+						</div>
+						<div class="h_cont_use_val"style="">
+							<span id="version"></span>
+						</div>
+					</div>
+					<div class="con_string2"></div>
+					<div class="h_node_info">
+						<div class="h_cont_use_key" style="">
+							<img class="" src="img/n3@2x(2).png"/>
+							<span class="">HEIGHT</span> 
+						</div>
+						<div class="h_cont_use_val"style="">
+							<span id="height"></span>
+						</div>
+					</div>
+				</div>
+				<div class="con_nodes3">
+					<div class="hh_seach_plan">
+						<div class="hh_from_left">
+							<img src="img/n4@2x(3).png" style=""/>
+							<span style="white-space:nowrap;">Change node</span>
+						</div>
+						<div class="hh_from_rigth">
+							<input id="node" placeholder="Change node"/>
+							<button id="check" class=""><span>Confirm</span></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script language="javascript" type="text/javascript">
+		window.require = window.parent.require;
+		const KeyStore = require('keystore_wdc');
+		const keystore = new KeyStore();
+		const KeyStoreController = require('../lib/keystore-controller');
+		const keyStoreController = new KeyStoreController();
+		const {remote}=require('electron');
+		let ip =  remote.getGlobal('ipObject')._ip;
+		const ipc = require('electron').ipcRenderer;
+	  
+		$(document).ready(function () {
+		  let heightUrl = ip+"/height";
+		  $.get(heightUrl,function(data){
+			if(data.data == "" || data.data == null){
+			  $("#height").html('连接超时！');
+			}else{
+			  $("#height").html(data.data);
+			}
+		  })
+	
+		  let versionUrl = ip+"/version";
+		  $.get(versionUrl,function(data){
+			if(data.data.version == "" || data.data.version == null){
+			  $("#version").html('连接超时！');
+			}else{
+			  $("#version").html(data.data.version);
+			}
+		  })
+		  $("#ip").html(ip);
+		});
+	
+		$('#check').click(function(){
+			let val = $("#node").val();
+			ipc.send("changeNode",val);
+			$("#ip").html("http://"+val);
+			keyStoreController.ModifyNode("http://"+val);
+			$(location).attr("href", "nodeinfo.html");
+			let heightUrl = "http://"+val+"/height";
+		  })
+	  </script>
+</html>

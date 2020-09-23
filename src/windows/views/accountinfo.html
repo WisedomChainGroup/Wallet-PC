@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>钱包浏览器</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="css/accountinfo.css" />
+		<link rel="stylesheet" href="css/public2.css" />
+		<script src="../lib/jquery-3.3.1.min.js"></script>
+	</head>
+	<body>
+		<section class="outer-section">
+			<div class="account_backdrop">
+				<div id="" class="nav">
+					<ul>
+						<li class="select_li"><a href="account.html">ACCOUNT</a></li>
+						<li class="noseelct_li"><a href="send.html">SEND</a></li>
+						<li class="noseelct_li"><a href="nodeinfo.html">NODEINFO</a></li>
+						<li class="noseelct_li"><a href="transferinfo.html">TRANSATIONINFO</a></li>
+						<li class="noseelct_li"><a href="prove.html">PROVE</a></li>
+					</ul>
+				</div>
+				<div class="h_con">
+					<div class="acc_list_deta">
+						<div class="acc_list_deta_txt">
+							<span>Detailed information</span>
+						</div>
+					</div>
+				</div>	
+				<div class="h_con_txt">
+					<div class="h_cont_list">
+						<div class="siding_address">
+							<span >Address</span>
+						</div>
+						<div class="siding_address_val">
+							<span id = "address"></span>
+						</div>
+					</div>
+					<div class="h_cont_list">
+						<div class="siding_address">
+							<span >Balance</span>
+						</div>
+						<div class="siding_address_val">
+							<span id="balance"></span>
+						</div>
+					</div>
+
+					<div class="h_cont_list">
+						<div class="siding_address" style="margin-top: 10%;">
+							<span >QR Code</span>
+						</div>
+						<div class="siding_address_val">
+							<span id="script"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script language="javascript" type="text/javascript">
+		window.require = window.parent.require;
+		const KeyStore = require('keystore_wdc');
+		const keystore = new KeyStore();
+		const qr = require('qr-image')
+		const os = require("os")
+		const path = require('path');
+		const fs = require('fs');
+		const Decimal = require('decimal');
+		const {remote}=require('electron');
+		let ip =  remote.getGlobal('ipObject')._ip;
+		let url = ip+"/sendBalance";
+		
+		let addr = localStorage.getItem("account-key");
+		let kspath;
+		var systemType=os.type();
+		if(systemType == "Darwin"){
+			kspath = path.join(os.homedir(),'/Library/Wisdom/keystore');
+			kspath = path.join(path.join(path.join(path.join(os.homedir(),'/Library'),'/Wisdom'),'/keystore'),'/Qrcode');
+		}else{
+			let dir = __dirname.substring(0,__dirname.length-24);
+			kspath = path.join(path.join(dir,'/Wisdom'),'/Qrcode');
+		}
+
+		$(document).ready(function () {  
+			let pubkeyhash = keystore.addressToPubkeyHash(addr);
+			$("#address").html(addr);
+			$.post(url,{pubkeyhash:pubkeyhash},function(data){
+				let rate = 100000000;
+				let balance = data.data;
+				let wdc = new Decimal(balance).div(new Decimal(rate)).toString()+"(WDC)";
+				$("#balance").html(wdc);
+			});
+		});
+		
+		var temp_qrcode = qr.image(addr,{ ec_level: 'H' });
+		temp_qrcode.pipe(fs.createWriteStream(kspath).on('finish', function(){
+			var html='<img src="'+kspath+'"alt="qrcode" style="height:15%;wigth:15%">';
+			$('#script').append(html);
+		}))
+	  </script>
+</html>
+ 

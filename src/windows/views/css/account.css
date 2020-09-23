@@ -1,0 +1,100 @@
+.outer-section {
+     width:100%;
+     float: left;
+     clear: both;
+}
+ .cont_use_blue{
+     top:0.125rem;
+     margin-left:0rem;
+	 width: 100%;
+}
+
+ .cont_use_blue2{
+	 float: left;
+     top:0.125rem;
+     margin-left:0rem;
+	 width: 100%;
+}
+
+.hh_cont_use_blue
+{
+	float:left;
+	margin-top: 1em;
+}
+.hh_span
+{
+	font-size: 100%;
+}
+
+.hh_a_cont
+{
+	width: 90%;
+	background:rgba(255,255,255,1);
+	border:1px solid rgba(124, 124, 124, 0.3);
+	position:absolute;
+	top:8em;
+	right:4.8%;
+}
+
+.hh_dealhead
+{
+	position:relative;
+	font-size:1.25rem;
+	font-weight:320;
+	color:rgba(16,101,206,1);
+	float: left;
+	text-align:left;
+	table-layout: fixed;
+	margin-top: 0.51em;
+}
+
+.hh_image_title
+{
+	margin-top:-0.5em;
+	margin-left:0rem;
+}
+.cont_use_ul2{
+	background-image: url(../img/acc-a.png);
+	display: inline-block;
+	vertical-align: middle;
+	background-size:100% 100%;
+	background-repeat:repeat-x;
+	margin-right:-0.3125rem;
+	text-align: center;
+	height:3em;
+}
+ .page_use
+ {
+     float: right;
+	 margin: 3em 2em 2em 0em;
+}
+.page_use i
+{
+	font-style: normal;
+}
+ .page_first{
+     background:url(../img/page1.png) no-repeat center content-box;
+}
+ .page_pu{
+     background:url(../img/page2.png) no-repeat center content-box;
+}
+ .page_num{
+     text-align: center;
+     color: #909090;
+}
+ .page_next{
+     background:url(../img/page4.png) no-repeat center content-box;
+}
+ .page_last{
+     background:url(../img/page5.png) no-repeat center content-box;
+}
+ 
+ .pageClassic
+ {
+	 width:1.125rem;
+	 height:1.125rem;
+	 border:1px solid rgba(124,124,124,1);
+	 border-radius:0.1875rem;
+	 display: inline-block;
+	 vertical-align: middle;
+ }

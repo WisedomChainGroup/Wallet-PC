@@ -1,10 +1,10 @@
 {
-  "name": "映射工具",
+  "name": "wisdom-wallet",
   "version": "0.1.0",
   "main": "src/main.js",
   "scripts": {
     "start": "electron src/main.js",
-    "packager": "electron-packager ./ Wallet --all --out ./OutApp --electron-version 2.0.8 --overwrite"
+    "packager": "electron-packager ./ Wallet --darwin --out ./OutTest --electron-version 2.0.8 --overwrite"
   },
   "devDependencies": {
     "electron": "^2.0.8",
@@ -14,9 +14,16 @@
     "eslint": "^5.5.0"
   },
   "dependencies": {
-    "argon2": "^0.19.3",
+    "argon2": "^0.24.0",
     "bn.js": "^4.11.8",
+    "decimal": "0.0.2",
     "ethers": "^4.0.27",
+    "int64-buffer": "^0.99.1007",
+    "keystore_wdc": "^0.2.2",
+    "node": "^8.10.0",
+    "node-gyp-build": "^4.1.0",
+    "qr-image": "^3.2.0",
+    "uint32": "^0.2.1",
     "uuid": "^3.3.2"
   }
 }

@@ -52,6 +52,7 @@ class AccountHandle {
         return new nacl.sign.keyPair();
     }
 
+
     //创建密钥对
     createKeyPairBySecretKey(secretKey) {
         return new nacl.sign.keyPair.fromSeed(secretKey);

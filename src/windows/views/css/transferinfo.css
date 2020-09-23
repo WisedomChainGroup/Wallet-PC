@@ -1,0 +1,100 @@
+.hh_seach_plan
+{
+	width: 80%;
+	margin-left: 10%;
+	position:absolute;
+}
+.hh_con_text
+{
+	width: 100%;
+	border: 1px solid #489AFF;
+	border-radius: 0.3125rem;
+	border-right:none;
+	float: left;
+	height: 3.5em;
+}
+
+.hh_con_text input
+{
+	margin-left: 1%;
+	width:55%;
+	height:2.5em;
+	font-weight:400;
+	color:#757575;
+	border:none;
+	border-radius:0rem;
+	box-shadow: 0rem 0rem 0rem 0rem;
+	background: rgba(243,245,250,1);
+	position:absolute;
+	margin-top: 0.3rem;
+	font:0.875rem "Microsoft YaHei", Verdana, "宋体", sans-serif;
+	outline:none;
+	background-color: transparent;
+}
+.hh_con_text button{
+	float: right;
+	min-width: 7.5%;
+	background-color: #4196FF;
+	height:100%;
+	border-radius: 0px 0.3125rem 0.3125rem 0px;
+	color: #FFFFFF;
+	border:none;
+	outline:none;
+}
+.hh_con_text button span{
+	font-size: 24px;
+}
+
+.hh_from_left
+{	
+	margin-top: 1em;
+	margin-bottom: 1em;
+	width: 20%;
+	float:left;
+}
+.hh_from_rigth
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	width: 75%;
+	float:left;
+}
+.img-responsive 
+{
+	width:auto;
+	float: right;
+}
+.hh_detal_item
+{
+	width: 100%;
+	margin-left: 10%;
+	float: left;
+}
+ .hh_blue_text_sding{
+	 margin-top: 7em;
+	 margin-left:10%;
+     width:80%;
+     height:3.5em;
+     background:url(../img/searchtxt.png) no-repeat center top;
+     border-radius:0.1875rem 0.1875rem 0rem 0rem;
+	 background-size:100% 100%;
+	 background-repeat:repeat-x;
+}
+.hh_detail_context_use
+{
+	width: 80%;
+	position:absolute;
+	margin-left:10%;
+	background:white;
+	font-size: large;
+	font-weight: 600;
+}
+
+
+
+.hh_a_cont
+{
+	width: 100%;
+	position:absolute;
+	top:8em;
+}

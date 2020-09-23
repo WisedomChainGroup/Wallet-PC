@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>钱包浏览器</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="css/transferinfo.css" />
+		<link rel="stylesheet" href="css/public2.css"/>
+		<script src="../lib/jquery-3.3.1.min.js"></script>
+	</head>
+	<body>
+		<section class="outer-section">
+			<div class="account_backdrop">
+				<div id="" class="nav">
+					<ul>
+						<li class="noseelct_li"><a href="account.html">ACCOUNT</a></li>
+						<li class="noseelct_li"><a href="send.html">SEND</a></li>
+						<li class="noseelct_li"><a href="nodeinfo.html">NODEINFO</a></li>
+						<li class="select_li"><a href="transferinfo.html">TRANSATIONINFO</a></li>
+						<li class="noseelct_li"><a href="prove.html">PROVE</a></li>
+					</ul>
+				</div>
+				<div class="hh_a_cont">
+					<div class="hh_seach_plan">
+						<div class="hh_con_text">
+							<img src="img/searchlogo.png" style=" transform: scale(0.6);margin-top: 0.5em;"/>
+							<input id="transaction" type="text" placeholder="Address/Trading Hash">
+							<button id="search"><span>Seach</span></button>
+						</div>
+					</div>
+					<div id="info" style="display: none;">
+						<div id="info" class="hh_blue_text_sding">
+						</div>
+						<div class="hh_detail_context_use">
+							<div class="hh_detal_item">
+								<div class="hh_from_left">
+									<span>From</span>
+								</div>
+								<div class="hh_from_rigth">
+									<span id="form"></span>
+								</div>
+							</div>
+							<div class="hh_detal_item">
+								<div class="hh_from_left">
+									TO
+								</div>
+								<div class="hh_from_rigth">
+									<span id="to"></span>
+								</div>
+							</div>
+							<div class="hh_detal_item">
+								<div class="hh_from_left">
+									Nonce
+								</div>
+								<div class="hh_from_rigth">
+									<span id="nonce"></span>
+								</div>
+							</div>
+							<div class="hh_detal_item">
+								<div class="hh_from_left">
+									Amount
+								</div>
+								<div class="hh_from_rigth">
+									<span id="amount"></span>
+								</div>
+							</div>
+							<div class="hh_detal_item">
+								<div class="hh_from_left">
+									BlockHeight
+								</div>
+								<div class="hh_from_rigth">
+									<span id="blockheight"></span>
+								</div>
+							</div> 
+						</div>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script language="javascript" type="text/javascript">
+		window.require = window.parent.require;
+		const {remote}=require('electron');
+		let ip =  remote.getGlobal('ipObject')._ip;
+	   
+		const AccountHandle = require('../lib/account-handle');
+		const account = new AccountHandle();
+	
+		function accDiv(arg1,arg2){
+		  var t1=0,t2=0,r1,r2;
+		  try{t1=arg1.toString().split(".")[1].length}catch(e){}
+		  try{t2=arg2.toString().split(".")[1].length}catch(e){}
+		  with(Math){
+			  r1=Number(arg1.toString().replace(".",""))
+			  r2=Number(arg2.toString().replace(".",""))
+			  return (r1/r2)*pow(10,t2-t1);
+		  }
+		}
+	
+		$('#search').click(function(){
+			try{
+		  const KeyStore = require('keystore_wdc');
+		  const keystore = new KeyStore();
+		  const KeyStoreController = require('../lib/keystore-controller');
+		  const keyStoreController = new KeyStoreController();
+		  $("#info").hide();
+		  let transaction = $("#transaction").val();
+		  $("#form").html("");
+		  $("#to").html("");
+		  $("#nonce").html("");
+		  $("#amount").html("");
+		  $("#blockheight：").html("");
+	
+		  if(transaction == "" || transaction == null){
+			alert("请输入Txhash！");
+			return false;
+		  }
+		  let URL = ip+"/transaction/"+transaction;
+		  $.get(URL,function(data){
+			if(data.code == 400){
+			  alert("还未写入区块！");
+			  return false;
+			}
+			$("#info").show();
+			let from = keyStoreController.pubKeyToadd(data.from);
+			$("#form").html(from);
+			let to = keystore.pubkeyHashToaddress(data.to,"WX");
+			$("#to").html(to);
+			$("#nonce").html(data.nonce);
+			let amount = accDiv(data.amount,100000000);
+			$("#amount").html(amount);
+			$("#blockheight").html(data.blockHeight);
+		  })
+		  }catch(e){console.log(e)}
+		})
+	  </script>
+</html>

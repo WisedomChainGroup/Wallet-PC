@@ -30,7 +30,7 @@
   $(document).ready(function () {
     const {ipcRenderer} = require('electron');
     const fs = require('fs');
-    const KeyStore = require('../lib/keystore');
+    const KeyStore = require('keystore_wdc');
     const keystore = new KeyStore();
     const session = require('electron').remote.session;
     const ethers = require('ethers');

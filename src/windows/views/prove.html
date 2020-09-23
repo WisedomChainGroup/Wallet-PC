@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>钱包浏览器</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="css/prove.css" />
+		<link rel="stylesheet" href="css/public2.css"/>
+		<script src="../lib/jquery-3.3.1.min.js"></script>
+	</head>
+	<body>
+		<section class="outer-section">
+			<div class="account_backdrop">
+				<div id="" class="nav">
+					<ul>
+						<li class="noseelct_li"><a href="account.html">ACCOUNT</a></li>
+						<li class="noseelct_li"><a href="send.html">SEND</a></li>
+						<li class="noseelct_li"><a href="nodeinfo.html">NODEINFO</a></li>
+						<li class="noseelct_li"><a href="transferinfo.html">TRANSATIONINFO</a></li>
+						<li class="select_li"><a href="prove.html">PROVE</a></li>
+					</ul>
+				</div>
+				<div class="hh_a_cont">
+					<div class="hh_seach_plan">
+						<div class="hh_con_text">
+							<img src="img/searchlogo.png" style=" transform: scale(0.6);margin-top: 0.5em;"/>
+							<input id="txhash" type="text" placeholder="Address/Trading Hash">
+							<button id="search"><span>Seach</span></button>
+						</div>
+					</div>
+					
+					<textarea id="text" rows="15" class="hh_textarea" readonly="readonly">
+					
+					</textarea>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script language="javascript" type="text/javascript">
+		window.require = window.parent.require;
+		const {remote}=require('electron');
+		let ip =  remote.getGlobal('ipObject')._ip;
+		$('#search').click(function(){
+			try{
+				$("#text").val("");
+				let txhash = $("#txhash").val();
+				if(txhash == "" || txhash == null){
+					alert("请输入事务哈希");
+					return;
+				}
+				let URL = ip+"/transaction/"+txhash;
+				$.get(URL,function(data){
+					if(data.code == 400){
+						alert("还未写入区块！");
+						return false;
+					}
+					let payload = data.payload;
+					let prove = new String(Buffer.from(payload, 'hex'));
+					$("#text").val(prove);
+				})
+		  }catch(e){console.log(e)}
+		})
+	</script>
+</html>

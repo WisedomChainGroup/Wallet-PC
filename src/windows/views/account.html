@@ -1,72 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>账户列表</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+		<meta name="renderer" content="webkit">
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="css/account.css" />
+		<link rel="stylesheet" href="css/public2.css" />
+		<script src="js/jquery.min.js"></script>
+		<script src="../lib/templete.js"></script>
+	</head>
+	<body>
+		<section class="outer-section">
+			<div class="account_backdrop">
+					<div id="" class="nav">
+						<ul>
+							<li class="select_li"><a href="account.html">ACCOUNT</a></li>
+							<li class="noseelct_li"><a href="send.html">SEND</a></li>
+							<li class="noseelct_li"><a href="nodeinfo.html">NODEINFO</a></li>
+							<li class="noseelct_li"><a href="transferinfo.html">TRANSATIONINFO</a></li>
+							<li class="noseelct_li"><a href="prove.html">PROVE</a></li>
+						</ul>
+					</div>
+					<div class="hh_a_cont">
+						<div class="cont_use_blue cont_use_ul2">
+							<div class="hh_dealhead" style="width: 15%;margin-left: 2em;">Name</div>
+							<div class="hh_dealhead" style="width: 60%;">Address</div>
+						</div>
+						
+						<!-- <div class="cont_use_blue2">
+							<div class="hh_cont_use_blue" style="width: 15%;margin-left: 3em;">
+								<img class="hh_image_title" src="img/a1@3x.png"/>
+								<span class="hh_span">Account</span>
+							</div>
+							<div class="hh_cont_use_blue" style="width: 60%;">
+								<img class="hh_image_title" src="img/a2@3x.png"/>
+								<span class="hh_span"> 1NoeCnkqvqXLU7Uv4kHw8Ud2WfEXy1mxS9</span>
+							</div>
+						</div> -->
+						<!-- 
+						<div class="cont_use_blue2">
+							<div class="hh_cont_use_blue" style="width: 15%;margin-left: 3em;">
+								<img class="hh_image_title" src="img/a1@3x.png"/>
+								<span class="hh_span">Account</span>
+							</div>
+							<div class="hh_cont_use_blue" style="width: 60%;">
+								<img class="hh_image_title" src="img/a2@3x.png"/>
+								<span class="hh_span"> 1NoeCnkqvqXLU7Uv4kHw8Ud2WfEXy1mxS9</span>
+							</div>
+						</div> -->
+					</div>
+			</div>
+		</section>
+		
+	</body>
+	<script language="javascript" type="text/javascript">
+	window.require = window.parent.require;
+	const fs = require('fs');
+	const path = require('path');
+	var remote = require('electron').remote;
+	var __dirname =  remote.getGlobal('sharedObject').__dirname;
+	var newpath = __dirname.substring(0,__dirname.length-23);
+	const os = require("os")
 
-  <head>
-    <meta charset="UTF-8">
-    <link href="../styles/common.css" rel="stylesheet">
-    <link href="../styles/account.css" rel="stylesheet">
-    <script src="../lib/jquery-3.3.1.min.js"></script>
-    <style type="text/css">
-      .intro{
-          filter:alpha(opacity=0);opacity:0;width: 0;height: 0;
-      }
-  
-  </style>
-  </head>
+	let kspath;
+	var systemType=os.type();
+	if(systemType == "Darwin"){
+		kspath = path.join(os.homedir(),'/Library/Wisdom/keystore');
+		kspath = path.join(path.join(path.join(os.homedir(),'/Library'),'/Wisdom'),'/keystore');
+	}else{
+		let dir = __dirname.substring(0,__dirname.length-24);
+		kspath = path.join(dir,'/Wisdom');
+	}
 
-  <body>
-    <main class="dapp-content">
-      <div>
-          <h2>地址：</h2>
-          <span class="account-id"></span>
-      </div>
-      <!-- <div class="account-transaction-box">
-        <h2>余额：</h2>
-        <span class="eth-val"></span>
-      </div> -->
-    </main>
-  </body>
-
-  <script language="javascript" type="text/javascript">
-    window.require = window.parent.require;
-
-    const fs = require('fs');
-    const path = require('path');
-    var remote = require('electron').remote;
-    var __dirname =  remote.getGlobal('sharedObject').__dirname;
-    var newpath = __dirname.substring(0,__dirname.length-23);
-
-    // var Web3 = require('web3');
-    // var web3 = new Web3(new Web3.providers.HttpProvider('https:////127.0.0.1:7545'));
-    // var readpath = newpath+"sol/WisdomMapping.json"
-    // //var abi = fs.readFileSync(readpath).toString();
-    // var abi = require(readpath);
-    // var MyContract =new web3.eth.Contract(abi,'0xeed6243788aefd9b56d014bd1f9ec55c6fa4972f');
-    
-    
-
-    // async function asyncCall(ethaddress) {
-    //     var value = await MyContract.methods.balanceOf(ethaddress).call({ from: ethaddress ,gas: 3141592});
-    //     return value;
-    // }
-
-
-    $(document).ready(function () {
-      // let addr = localStorage.getItem("account-key");
-      // async function compute(ethaddress) {
-      //   var value = await asyncCall(ethaddress); 
-      //   $(". eth-val").text(addr);
-       
-      // }
-      const SqliteHandle = require('../lib/sqlite-handle');
-
-      //new SqliteHandle().getOne(addr, function(row) {
-        $(".account-id").text(addr);
-        // var ethvalue = App.getalance(addr);
-        // $(".eth-val").text(ethvalue);
-        
-      // });
-    });
-  </script>
-
+	$(document).ready(function () {
+		var list = [];
+		var addressList = [];
+		var remote = require('electron').remote;
+		var network =  remote.getGlobal('network').someProperty;
+		var accountNum = 1;
+		var checkDir = fs.existsSync(kspath);
+		if(checkDir == true){
+			var fileStr = fs.readdirSync(kspath);
+			for(var a=0;a<fileStr.length-1;a++){
+	　　　　　　for(var j=0;j<fileStr.length-1-a;j++){
+				var af = fileStr[j].split("@");;
+				var bf = fileStr[j+1].split("@");;
+				if(af.length>1 && bf.length>1){
+					if(af[1]>bf[1]){
+		　　　　　　　　　　var temp=fileStr[j];
+						fileStr[j]=fileStr[j+1];
+						fileStr[j+1]=temp;
+	　　　　　　　　  }
+				}
+				}　
+			}
+			var num = 0;
+			for(var i=0;i<fileStr.length;i++){
+			var file ;
+			var p = path.join(kspath,fileStr[i]);
+			file = fs.readFileSync(p).toString();
+			if(file != ""){
+				try{
+				var filejson = JSON.parse(file);
+				var address  = filejson.address;
+				var obj = {};
+				obj['address'] = address;
+				obj['name'] = "account"+(accountNum++);
+				addressList.push(address)
+				list.push(obj);
+				}catch(error){
+				//continue；
+				}
+			}
+			}
+			for(var i=0;i<list.length;i++){
+				
+				if(list[i].address.indexOf("1") == 0){
+					if(!(addressList.includes("WX"+list[i].address)) && !(addressList.includes("WR"+list[i].address))){
+						$(".hh_a_cont").append(Templete.account(list[i].address, list[i].name));
+					}
+				}else{
+					$(".hh_a_cont").append(Templete.account(list[i].address, list[i].name));
+				}
+			}
+			$(".hh_span_address").click(function(){
+				// $('.dapp-header a', parent.document).removeClass("active");
+				localStorage.setItem("account-key", $(this).text());
+				$(location).attr("href", "accountinfo.html");
+			})
+		}else{
+		return;
+		}
+		});
+	</script>
 </html>

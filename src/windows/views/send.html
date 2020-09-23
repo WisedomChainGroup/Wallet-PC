@@ -1,44 +1,256 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title>钱包浏览器</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta name="searchtitle" content="">
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href="css/public2.css">
+		<link rel="stylesheet" href="css/send.css" />
+		<script src="../lib/jquery-3.3.1.min.js"></script>
+	</head>
+	<body>	
+		<section class="outer-section">
+			<div class="account_backdrop">
+				<div id="" class="nav">
+					<ul>
+						<li class="noseelct_li"><a href="account.html">ACCOUNT</a></li>
+						<li class="select_li"><a href="send.html">SEND</a></li>
+						<li class="noseelct_li"><a href="nodeinfo.html">NODEINFO</a></li>
+						<li class="noseelct_li"><a href="transferinfo.html">TRANSATIONINFO</a></li>
+						<li class="noseelct_li"><a href="prove.html">PROVE</a></li>
+					</ul>
+				</div>
+				<div class="hh_a_cont">
+					<div class="stepLogo">
+						<table class="hh_table_logo">
+							<tr>
+								<td class="hh_draw_zero"><img src="img/@2x(5).png" /></td>
+								<td style="width: 7%;"><img src="img/arrow.png" /></td>
+								<td class="hh_draw_zero"><img src="img/@2x(1).png" /></td>
+								<td style="width: 7%;"><img src="img/arrow.png" /></td>
+								<td class="hh_draw_zero"><img src="img/@2x(2).png" /></td>
+								<td style="width: 7%;"><img src="img/arrow.png" /></td>
+								<td class="hh_draw_zero"><img src="img/@2x(3).png" /></td>
+								<td style="width: 7%;"><img src="img/arrow.png" /></td>
+								<td class="hh_draw_zero"><img src="img/@2x(4).png" /></td>
+							</tr>
+							<tr>
+								<td class="hh_table_font">Choose Initator</td>
+								<td></td>
+								<td class="hh_table_font">Display balance</td>
+								<td></td>
+								<td class="hh_table_font">Choose payee</td>
+								<td></td>
+								<td class="hh_table_font">Transfer amount</td>
+								<td></td>
+								<td class="hh_table_font">Send out</td>
+							</tr>
+						</table>
+		
+					</div>
+					<div class="hh_from_data">
+						<div>
+							<div class="hh_cont_use_blue">From</div>
+							<div class="hh_from_input hh_from_inputs"><input readonly="readonly" id="fromaddress"  placeholder="Please choose keystore""/></div>
+							<div class="hh_from_input_key" id="inputDataBackup1">
+								<input type="file" name="file" id="fileField"  onchange="keystoreChange()" />
+								<button class="allBtn costs-marl15">Keystore</button>
+								<input type='text' id="textfield"/> 
+							</div>
+						</div>
+						<div id="passwordInput" style="display: none;">
+							<div class="hh_cont_use_blue" >Passwd</div>
+							<div class="hh_from_input"><input id="frompass" placeholder="Passwd" type="password"/></div>
+							<div class="hh_from_input_key">
+								<button class="hh_from_button_parse" onclick="check();" id="check">Parse</button>
+							</div>
+						</div>
+						<div id="password_div" style="display: none;">
+							<input id="prikey" type="hidden"/>
+							<input id="pubkey" type="hidden"/>
+							<input id="nonce" type="hidden"/>
+						</div>
+						<div id="balance_div" style="display: none;">
+							<div class="hh_cont_use_blue" >Balance</div>
+							<div class="hh_from_input"><input id="balance" readonly="readonly"/></div>
+						</div>
+						<div>
+							<div class="hh_cont_use_blue">To</div>
+							<div class="hh_from_input"><input placeholder="To" id="toaddress" onkeyup="value=value.replace(/[^\w]/ig,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\w]/ig,''))"/></div>
+						</div>
+						<div>
+							<div class="hh_cont_use_blue">Amount</div>
+							<div class="hh_from_input"><input id="amount"   onkeyup="clearNoNum(this)" placeholder="Amount"/></div>
+						</div>
+						<div><div class="hh_cont_use_blue"></div></div>
+					</div>
+					<div class="hh_button_style">
+						<button onclick="submit()">
+							<div class="hh_button_styleDraw">
+								Submit
+							<div>
+						</button>
+					</div>
+					</div>
+					
+				</div>
+			</div>
 
-  <head>
-    <meta charset="UTF-8">
-    <link href="../styles/common.css" rel="stylesheet">
-    <link href="../styles/send.css" rel="stylesheet">
-    <script src="../lib/jquery-3.3.1.min.js"></script>
-  </head>
+		</section>
+	</body>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script language="javascript" type="text/javascript">
+		window.require = window.parent.require;
+		const {remote}=require('electron');
+		let ip =  remote.getGlobal('ipObject')._ip;
+		const { clipboard } = require('electron');
+		const Decimal = require('decimal');
+		let rate = 100000000;
+	
+		function clearNoNum(obj) {
+				obj.value = obj.value.replace(/[^\d.]/g, "");  //清除“数字”和“.”以外的字符   
+				obj.value = obj.value.replace(/\.{9,}/g, "."); //只保留第一个. 清除多余的   
+				obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+				obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d\d\d).*$/, '$1$2.$3');//只能输入八个小数   
+				if (obj.value.indexOf(".") < 0 && obj.value != "") {//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+					obj.value = parseFloat(obj.value);
+				}
+			}
+		async function check(){
+		  const KeyStore = require('keystore_wdc');
+		  const keystore = new KeyStore();
+		  
+		  var password = document.getElementById("frompass").value;
+		  var f = document.getElementById("fileField").files;  
+		  var pa = f[0].path;
+		  var json=keystore.Readfull(pa);
+		  if(password==""){
+			alert("密码不能为空");
+			return false;
+		  }
+		  try{
+			let prikey  =await keystore.DecryptSecretKeyfull(json,password);
+			if(prikey == null || prikey == ""){
+				$("#balance_div").hide();
+				$("#password_div").hide();
+				$("#fromaddress").val("");
+			  alert("获取私钥失败，请检查keystore和密码是否正确！");  
+			  return false;
+			}
 
-  <body>
-    <main class="dapp-content">
-      <h1><strong>Send</strong> funds</h1>
-      <div class="from-to">
-        <div class="from">
-          <h3>From</h3>
-          <select class="from-sel-box">
-          </select>
-        </div>
-        <div class="to">
-          <h3>To</h3>
-          <select class="to-sel-box">
-          </select>
-        </div>
-      </div>
-    </main>
-  </body>
+			//隐藏与显示
+			$("#balance_div").show();
+			$("#password_div").show();
+			let pubkey = keystore.prikeyToPubkey(prikey.substr(0,64));
+			let address = json.address;
+			let ph = keystore.addressToPubkeyHash(address);
+			let url = ip+"/sendNonce";
+			$.post(url,{pubkeyhash:ph},function(data){
+			  document.getElementById("nonce").value = data.data;
+			});
+			let balanceUrl = ip+"/sendBalance";
+			$.post(balanceUrl,{pubkeyhash:ph},function(data){
+			  let balance = data.data;
+			  let wdc = new Decimal(balance).div(new Decimal(rate)).toString();
+			  document.getElementById("balance").value = wdc+"(WDC)";
+			});
+			document.getElementById("prikey").value = prikey;
+			document.getElementById("pubkey").value = pubkey;
+			document.getElementById("fromaddress").value = address;
+			$("prikey").change();
+		  }catch(error){
+			$("#balance_div").hide();
+			$("#password_div").hide();
+			$("#fromaddress").val("");
+			alert("获取私钥失败，请检查keystore和密码是否正确！");
+		  }
+		}
+		function submit(){
+		  const ipc = require('electron').ipcRenderer;
+		  const KeyStore = require('keystore_wdc');
+		  const keystore = new KeyStore();
+		  let address = document.getElementById("fromaddress").value;
+		  let ph = keystore.addressToPubkeyHash(address);
+		  let nonce = $("#nonce").val();
+		  let toaddress = document.getElementById("toaddress").value;
+		  let amount = document.getElementById("amount").value;
+		  let pubkey = document.getElementById("pubkey").value;
+		  let prikey = document.getElementById("prikey").value;
+		  let isFromaddress = keystore.verifyAddress(address);
+		  let isToaddress = keystore.verifyAddress(toaddress);
+			
+	
+		  //处理nonce
+		  let nonceStatus;
+		  console.log($("#"+ph).val());
+		  if(typeof($("#"+ph).val()) == "undefined"){
+			nonceStatus = nonce;
+			let html = "<input type='hidden' id="+ph+" value="+nonce+"/>";  
+			$('#inputDataBackup1').append(html); 
+		  }else{
+			nonceStatus = parseInt($("#"+ph).val())+parseInt(1);
+			document.getElementById(ph).value = parseInt(nonceStatus);
+		  }
+		  console.log(address);
+		  console.log(toaddress);
+		  console.log(isFromaddress);
+		  console.log(isToaddress);
+		  if(isFromaddress != 0 || isToaddress != 0){
+			alert("请输入正确地址");
+			return false;
+		  }
+		  let toPubkeyHash = keystore.addressToPubkeyHash(toaddress);
+		  if(amount == "" || amount == null){
+			alert("请输入正确金额");
+			return false;
+		  }
+		  //构造事务
+		  let txhash = "";
+		  let traninfo = "";
+		  let tran = keystore.ClientToTransferAccount(pubkey,toPubkeyHash,amount,prikey,nonceStatus);
+		  if(tran == 5000){
+			alert("构造事务失败");
+			return false;
+		  }else{
+			txhash = tran.txHash; 
+			traninfo = tran.transaction;
+			clipboard.writeText(txhash)
+		  }
+		  //广播事务
+		  let sendUrl = ip+"/sendTransaction";
+		  $.post(sendUrl,{traninfo:traninfo},function(data){
+			let code = data.code;
+			if(code == 2000){
+			  
+				alert("广播成功 \n "+txhash+"(已复制)");
+				$("#amount").val("");
+				let balanceUrl = ip+"/sendBalance";
+				$.post(balanceUrl,{pubkeyhash:ph},function(data){
+				let balance = data.data;
+				let wdc = new Decimal(balance).div(new Decimal(rate)).toString();
+				document.getElementById("balance").value = wdc+"(WDC)";
+				});
+				// ipc.send("send",data);
+			}else{
+			  alert("广播失败 \n"+data.message);
+			  return false;
+			}
+		  })
+		}
 
-  <script language="javascript" type="text/javascript">
-    window.require = window.parent.require;
-    $(document).ready(function () {
-      //let addr = localStorage.getItem("account-key");
+		//处理隐藏与显示
+			//处理隐藏与显示
+		function keystoreChange(){
+			$("#balance_div").hide();
+			$("#frompass").val("");
+			let value = $("#fileField").val()
+			// $("#textfield").val(value);
+			$("#passwordInput").show();
+		}
 
-      const SqliteHandle = require('../lib/sqlite-handle');
-
-      new SqliteHandle().getAll(function(rows) {
-        rows.forEach(element => {
-          $(".from-sel-box").append(`<option value=${element.address}>${element.address}</option>`);
-        });
-      });
-    });
-  </script>
-
+	  </script>
 </html>

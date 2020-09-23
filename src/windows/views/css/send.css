@@ -1,0 +1,178 @@
+
+.hh_draw_img img
+{
+	display: flex;
+}
+.hh_draw_zero
+{
+	width:3.5%;
+	/* height:10%; */
+	background:rgba(72,154,255,1);
+	border-radius:55%;
+}
+.stepLogo
+{
+	width: 95%;
+	top:8em;
+	text-align:center
+}
+.hh_table_logo
+{
+	margin-left:5%;
+}
+
+.hh_table_font
+{
+	font-size:small;
+}
+
+.hh_from_data
+{
+	float: left;
+	width: 90%;
+	background:linear-gradient(90deg,rgba(38,91,217,1),rgba(30,138,241,1),rgba(48,149,247,1));
+	box-shadow:0rem 0.5rem 1.5625rem 0rem rgba(0,104,233,0.47);
+	border-radius:1.125rem;
+	margin-left:5%;
+	margin-right:5%;
+	margin-top: 2em;
+}
+
+.hh_from_input input
+{
+	height: 2em;
+	border:1px solid rgba(255,255,255,1);
+	border-radius:0.4375em;
+	width: 50%;
+	color: #555;
+	margin-left: 1em;
+	margin-top: -2em;
+}
+ input::-webkit-input-placeholder {
+	color: #aab2bd;
+	left:1em;
+	position:relative;
+ }
+
+.hh_cont_use_blue_key
+{
+	font-size: 1.2em;
+	color: white;
+	width: 10%;
+	text-align: right;
+	float:left;
+	margin-top: 1.6em;
+}
+.hh_cont_use_blue_key button
+{
+	width: 100%;
+	height: 2.5em;
+	border-radius:20px 0 0 20px;
+}
+.hh_cont_use_blue
+{	
+	font-size: 1.2em;
+	color: white;
+	width: 15%;
+	margin-left: 10%;
+	float:left;
+	margin-top: 1.5em;
+	clear:both;
+}
+.hh_from_input_key
+{
+	width: 20%;
+	margin-top: 1.5em;
+	float:left;
+}
+
+.hh_from_input_key input
+{
+	height: 2em;
+	border:1px solid rgba(255,255,255,1);
+	border-radius:0.4375em;
+	width: 100%;
+	color: #555;
+	border-radius:0 20px 20px 0;
+}
+
+.hh_from_input
+{
+	width: 40%;
+	margin-top: 1.5em;
+	float:left;
+}
+
+.hh_button_style
+{
+/* 	 float: right;
+	 width: 53%; */
+	 margin-top: 20em;
+	 text-align: center;
+}
+.hh_button_style button
+{
+	 border:none;
+	 outline:none;
+}
+.hh_button_styleDraw
+{
+	text-align: center;
+	line-height:50px;
+	color: white;
+	font-size: 200%;
+	width:4.5em;
+	height:2em;
+	background:rgba(65,150,255,1);
+	border-radius:0.3125rem;
+}
+
+.hh_a_cont
+{
+	width: 100%;
+	position:absolute;
+	top:8em;
+}
+
+
+
+div.hh_from_input_key{
+    position:relative;
+}
+div.hh_from_input_key #textfield{
+    width:60%;
+    height:28px;
+	border-radius:0 5px 5px 0;
+}
+div.hh_from_input_key #fileField{
+    width:100%;
+    height:30px;    
+    position: absolute;
+    top: 0;
+    left:0;
+    filter: alpha(opacity:0);
+    opacity: 0;
+}
+div.hh_from_input_key .allBtn{
+	float: left;
+    padding:0;
+    margin:0;
+    height: 30px;
+    line-height: 30px;
+    width: 35%;
+    background-color:#236CE2;
+    border: none;
+    color: #fff;
+	border-radius:5px 0 0 5px;
+}
+.hh_from_button_parse{
+	padding:0;
+	margin:0;
+	height: 30px;
+	line-height: 30px;
+	min-width: 35%;
+	background-color: #265CDA;
+	border: none;
+	color: #fff;
+	border-radius:15px 15px 15px 15px;
+}

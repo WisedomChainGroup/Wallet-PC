@@ -1,0 +1,64 @@
+.hh_a_cont
+{
+	width: 100%;
+	position:absolute;
+	top:8em;
+}
+.hh_seach_plan
+{
+	width: 80%;
+	margin-left: 10%;
+	position:absolute;
+}
+.hh_con_text
+{
+	width: 100%;
+	border: 1px solid #489AFF;
+	border-radius: 0.3125rem;
+	border-right:none;
+	float: left;
+	height: 3.5em;
+}
+
+.hh_con_text input
+{
+	margin-left: 1%;
+	width:80%;
+	height:2.5em;
+	font-weight:400;
+	color:#757575;
+	border:none;
+	border-radius:0rem;
+	box-shadow: 0rem 0rem 0rem 0rem;
+	background: rgba(243,245,250,1);
+	position:absolute;
+	margin-top: 0.3rem;
+	font:0.875rem "Microsoft YaHei", Verdana, "宋体", sans-serif;
+	outline:none;
+	background-color: transparent;
+}
+.hh_con_text button{
+	float: right;
+	min-width: 7.5%;
+	background-color: #4196FF;
+	height:100%;
+	border-radius: 0px 0.3125rem 0.3125rem 0px;
+	color: #FFFFFF;
+	border:none;
+	outline:none;
+}
+.hh_con_text button span{
+	font-size: 24px;
+}
+.hh_textarea{
+	width: 80%;
+	margin-top: 90px;
+	position:absolute;
+	margin-left:10%;
+	background:white;
+	font-size: large;
+	font-weight: 600;
+	border: 1px solid rgba(124, 124, 124, 0.3);
+	text-align: left;
+	display: inline-block;
+}

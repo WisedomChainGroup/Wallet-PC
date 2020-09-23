@@ -2,13 +2,45 @@
 
 const path = require('path');
 const { BrowserWindow,dialog} = require('electron');
-var remote = require('electron');
+const remote = require('electron');
 var Menu = remote.Menu;
 const clidwindow=require('./clidwindow');
 const clidw=new clidwindow();
 const zh = require('../lang/zh');
 const en = require('../lang/en');
-const { app } = require('electron')
+const { app } = require('electron');
+const electron = require('electron');
+const globalShortcut = electron.globalShortcut;
+const ipc = require('electron').ipcMain; 
+const os = require("os")
+const fs = require('fs');
+const KeyStore = require('keystore_wdc');
+const keystore = new KeyStore();
+const KeyStoreController = require('../lib/keystore-controller');
+const keyStoreController = new KeyStoreController();
+KeyStoreController
+
+
+//node 配置
+let ip;
+var systemType=os.type();
+let node_path;
+if(systemType == "Darwin"){
+  node_path = path.join(os.homedir(),'/Library/Wisdom');
+}else{
+  let dir = __dirname.substring(0,__dirname.length-24);
+  node_path = path.join(dir,'/Wisdom');
+}
+const filePath = path.join(node_path,'/'+ "node");
+if(!fs.existsSync(filePath)){
+  keyStoreController.ModifyNode("http://192.168.1.11:19585");
+  ip = "http://192.168.1.11:19585";
+}else{
+  ip = keyStoreController.NodeInfo(); 
+}
+
+
+
 
 
 // const Il8nindex=require('../i18n/Il8nindex');
@@ -19,6 +51,7 @@ const { app } = require('electron')
 
 //const Common = require('../../common');
 
+
 global.network = {
   someProperty: "main"
 };
@@ -27,18 +60,25 @@ global.sharedObject = {
   __dirname: __dirname
 };
 
+global.ipObject = {
+  _ip: ip
+};
 
-const ipc = require('electron').ipcMain; 
+ipc.on("changeNode",function(event,data){
+  global.ipObject = {
+    _ip:"http://"+data
+  };
+})
 
 ipc.on("hereyoua",function(event,data){
-  top.loadURL(`file://${path.join(__dirname, '/../views/index.html')}`);
+  top.loadURL(`file://${path.join(__dirname, '/../views/account.html')}`);
   })
-//   ipc.on("close", (e) => {
-    
-//     // app.quit();
-//     app.once('window-all-closed', app.quit)
 
-// });
+ipc.on("send",function(event,data){
+  top.loadURL(`file://${path.join(__dirname, '/../views/account.html')}`);
+  })
+
+
 
 app.on('window-all-closed', () => {
   app.quit()
@@ -68,7 +108,7 @@ class Index {
   constructor() {
     top = new BrowserWindow({
       width: 800,
-      height: 600,
+      height: 580,
       title: 'Wisdom Wallet',
       resizable: true,
       center: true,
@@ -80,7 +120,7 @@ class Index {
       titleBarStyle: 'hidden',
     });
 
-    top.loadURL(`file://${path.join(__dirname, '/../views/index.html')}`);
+    top.loadURL(`file://${path.join(__dirname, '/../views/account.html')}`);
     // top.isShown = false;
 
     var menu = Menu.buildFromTemplate(this.menuindex());
@@ -92,7 +132,7 @@ class Index {
     top.isShown = true;
 
     // 打开开发者工具
-    //top.webContents.openDevTools()
+    top.webContents.openDevTools()
   }
 
   hide() {
@@ -149,7 +189,6 @@ class Index {
     }
 
 
-
     var template = [{
       label: s1,
       submenu: [{
@@ -169,27 +208,28 @@ class Index {
             },function(files){
               if(files!=null){
                 let pathss=files[0];
-    
-                clidw.clidwindow(top,pathss,'1');
+                clidw.clidwindow(pathss,'1');
               }
             })
           }
-        },{
-          label: s4,
-           click:function(){
-            dialog.showOpenDialog(null,{
-              properties: ['openFile', 'showHiddenFiles'],
-              filters: [{
-                name: 'Text', 
-              }]
-            },function(files){
-              if(files!=null){
-                let pathss=files[0];
-                clidw.clidwindow(top,pathss,'2');
-              }
-            })
-          }
-        }]
+        }
+        // ,{
+        //   label: s4,
+        //    click:function(){
+        //     dialog.showOpenDialog(null,{
+        //       properties: ['openFile', 'showHiddenFiles'],
+        //       filters: [{
+        //         name: 'Text', 
+        //       }]
+        //     },function(files){
+        //       if(files!=null){
+        //         let pathss=files[0];
+        //         clidw.clidwindow(top,pathss,'2');
+        //       }
+        //     })
+        //   }
+        // }
+      ]
       }, 
       // {
       //   label: s5,
@@ -212,20 +252,34 @@ class Index {
       {
         label: s13,
         click: function(){
-          clidw.addAccount(top,__dirname);
+          //clidw.addAccount(top,__dirname);
+          clidw.addAccount();
         }
       }]
-    },{
-      label: s8,
-      submenu: [{
-        label: s9,
+    },
+    // {
+    //   label: s8,
+    //   submenu: [{
+    //     label: s9,
       
-          click: function(){
-            clidw.mapping();
-          }
+    //       click: function(){
+    //         clidw.mapping();
+    //       }
       
-      }]
-    }];
+    //   }]
+    // },
+    {
+       label: "Edit",
+       submenu: [
+          { label: "Undo", accelerator: "CommandOrControl+Z", selector: "undo:" },
+          { label: "Redo", accelerator: "Shift+CommandOrControl+Z", selector: "redo:" },
+          { type: "separator" },
+          { label: "Cut", accelerator: "CommandOrControl+X", selector: "cut:" },
+          { label: "Copy", accelerator: "Ctrl+C", selector: "copy:" },
+          { label: "Paste", accelerator: "CommandOrControl+V", selector: "paste:" },
+          { label: "Select All", accelerator: "CommandOrControl+A", selector: "selectAll:" }
+      ]}
+  ];
 
     
     return template;

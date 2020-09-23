@@ -5,7 +5,7 @@ const {app, ipcMain,dialog} = require('electron');
 const SplashWindow = require('./windows/controllers/splash');
 const SettingWindow = require('./windows/controllers/settings');
 const IndexWindow = require('./windows/controllers/index');
-const SqliteHandle = require('./windows/lib/sqlite-handle');
+// const SqliteHandle = require('./windows/lib/sqlite-handle');
 const IpcMainHandle = require('./windows/lib/ipcmain-handle');
 const nacl = require('./windows/lib/nacl.min.js');
 //const AccountHandle = require('./windows/lib/account-handle');
@@ -24,7 +24,7 @@ class Main{
 
     async init() {
         new IpcMainHandle().init();
-        new SqliteHandle().init();
+        // new SqliteHandle().init();
         this.initApp(); 
         this.initEvent();
         //this.test();

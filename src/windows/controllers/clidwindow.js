@@ -5,7 +5,7 @@ const { BrowserWindow} = require('electron');
 const {dialog} = require('electron')
 var remote = require('electron');
 var session=remote.session;
-const KeyStore = require('../lib/keystore');
+const KeyStore = require('keystore_wdc');
 // const indexs=require('./index.js');
 
 var win;
@@ -16,13 +16,12 @@ class clidwindow{
   }
   
 
-  clidwindow(top,pathss,type){
+  clidwindow(pathss,type){
     const modalPath = path.join(`file://${path.join(__dirname, '../views/inputpasswd.html')}`)
     win= new BrowserWindow({ 
-      width: 400, 
-      height: 105,
+      width: 650, 
+      height: 130,
       title:'请输入密码',
-      parent: top, 
       modal: true,
       show: false,
       resizable:false,
@@ -110,23 +109,29 @@ ethClidwindow(top,pathss,type){
   this.setCookies('type',type);
   //win.webContents.openDevTools()  
 }
-addAccount(top,__dirname){
+addAccount(top,pathss){
   const modalPath = path.join(`file://${path.join(__dirname, '../views/addAccount.html')}`)
-  win= new BrowserWindow({ 
-    width: 400, 
-    height: 205,
-    title:'',
+  qr= new BrowserWindow({ 
+    width: 500, 
+    height: 300,
+    title:'登记',
     parent: top, 
     modal: true,
     show: false,
     resizable:false,
     autoHideMenuBar: true })
   //Menu.setApplicationMenu(null);
-  win.on('closed', function () { win = null })
-  win.loadURL(modalPath)
-  win.show()
-  //win.webContents.openDevTools()  
+  qr.on('closed', function () { win = null })
+  qr.loadURL(modalPath)
+  qr.show()
+  //let winweb=win.webContents;
+  // this.setCookies('pathss',pathss);
+  // qr.webContents.openDevTools();
 }
+
+
+
+
 
 }
 module.exports = clidwindow;

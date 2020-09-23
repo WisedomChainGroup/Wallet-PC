@@ -4,6 +4,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <title>添加账户</title>
   <link href="../styles/common.css" rel="stylesheet">
   <link href="../styles/wallet.css" rel="stylesheet">
   <link href="../styles/iconfont.css" rel="stylesheet">
@@ -16,8 +17,7 @@
 
 </style>
 </head>
-
-<body>
+<body style="-webkit-app-region: drag">
   <main class="dapp-content">
     <div class="wallet-box-list" style="text-align: center;">
       <div id="inputpass">
@@ -38,26 +38,31 @@
   var remote = require('electron').remote;
   var net =  remote.getGlobal('network').someProperty;
   const ipc = require('electron').ipcRenderer;
-    
+  const os = require("os")
+  const KeyStore = require('keystore_wdc');
+  const KeyStoreController = require('../lib/keystore-controller');
+  const keyStoreController = new KeyStoreController();    
   $(document).ready(function () {
     const informationBtn = document.getElementById('result');
     });
-  const KeyStore = require('../lib/keystore');
+  
   async function add(){
     var {remote}=require('electron');
     var passwd = document.getElementById('passwd').value;
     if(passwd.length>20 || passwd.length<8){
       alert("请输入8-20位密码");
+      return false;
     }
     if(passwd == ""){
       alert("请输入密码");
+      return false;
     }
-    try{
+    try{    
         const keystore = new KeyStore();
         //创建keystore
-        const savefile = await keystore.Create(passwd,net);
+        const savefile = await keystore.Create(passwd);
         //保存keystore
-        keystore.Save(savefile,net);
+        keyStoreController.Save(savefile,net);
         $("#success").removeClass("intro"); 
         $("#passwd").addClass("intro");   
         $("#result").addClass("intro");   
