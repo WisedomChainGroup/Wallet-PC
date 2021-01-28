@@ -7,7 +7,7 @@
     "packager": "electron-packager ./ Wallet --darwin --out ./OutTest --electron-version 2.0.8 --overwrite"
   },
   "devDependencies": {
-    "electron": "^2.0.8",
+    "electron": "^9.4.0",
     "electron-builder": "^20.39.0",
     "electron-packager": "^12.2.0",
     "electron-rebuild": "^1.8.2",
